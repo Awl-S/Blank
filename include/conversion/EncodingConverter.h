@@ -9,7 +9,6 @@
 #include <vector>
 #include "tinyxml2.h"
 
-
 class EncodingConverter {
 public:
     EncodingConverter(std::string  inputDir, const std::string& outputDir = "");
@@ -31,9 +30,7 @@ private:
     std::string iconvConvert(const std::string& input, const std::string& fromCharset, const std::string& toCharset);
     void printStats();
     bool iconvConvert(const std::string& input, std::string& output, const std::string& fromCharset, const std::string& toCharset);
-
     bool is_utf8(const std::string& str);
-
 };
 
 #endif //BLANK_ENCODINGCONVERTER_H

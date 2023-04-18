@@ -1,7 +1,19 @@
 #include <utility>
 
 #include "../../include/conversion/EncodingConverter.h"
-
+/**
+@brief Конструктор класса EncodingConverter
+@param inputDir Входной каталог
+@param outputDir Выходной каталог
+Конструктор класса EncodingConverter принимает два параметра: inputDir (входной каталог) и outputDir (выходной каталог).
+Значение inputDir передается в качестве rvalue (std::move), а outputDir передается как const reference.
+Кроме того, конструктор инициализирует переменные-члены класса:
+inputDirectory - с помощью std::move(inputDir) перемещается входной каталог в переменную-член inputDirectory;
+outputDirectory - инициализируется переданным выходным каталогом outputDir;
+useTempDirectory - инициализируется значением outputDir.empty() - если выходной каталог не задан, то флаг useTempDirectory устанавливается в true.
+Далее, в конструкторе вызывается функция loadSettingsFromXml(), которая загружает настройки из XML-файла.
+После этого, переменные-члены filesConverted и filesProcessed инициализируются значением 0.
+*/
 EncodingConverter::EncodingConverter(std::string  inputDir, const std::string& outputDir)
         : inputDirectory(std::move(inputDir)), outputDirectory(outputDir), useTempDirectory(outputDir.empty()) {
     loadSettingsFromXml(), filesConverted = 0, filesProcessed = 0;
@@ -9,7 +21,7 @@ EncodingConverter::EncodingConverter(std::string  inputDir, const std::string& o
 
 void EncodingConverter::loadSettingsFromXml() {
     tinyxml2::XMLDocument doc;
-    doc.LoadFile("/home/orys/CLionProjects/Blank/include/xml/settings.xml");
+    doc.LoadFile("./settings/settings.xml");
 
     tinyxml2::XMLElement* root = doc.FirstChildElement("settings");
     if (!root) {
