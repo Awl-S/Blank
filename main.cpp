@@ -1,9 +1,27 @@
 #include <iostream>
 #include "include/command_line/CommandLine.h"
+<<<<<<< HEAD
 #include "include/conversion/file_converter.h"
 #include "include/conversion/EncodingConverter.h"
 
 int main(int argc, char *argv[]) {
+=======
+#include "include/conversion/EncodingConverter.h"
+
+void print_duration(const auto& start) {
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    auto duration_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    std::cout << "Время выполнения: " << duration_microseconds.count() << " microseconds" << std::endl;
+    std::cout << "Время выполнения: " << duration_milliseconds.count() << " milliseconds" << std::endl;
+}
+
+
+int main(int argc, char *argv[]) {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+>>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
     CommandLine cmd(argc, argv);
     auto command_type = cmd.get_command_type();
     auto args = cmd.get_args();
@@ -19,13 +37,25 @@ int main(int argc, char *argv[]) {
             std::cerr << "Неверное количество аргументов." << std::endl;
             return 1;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
     } else if (command_type == CommandLine::CommandType::GENERATE) {
         // вызов функции генерации
     } else if (command_type == CommandLine::CommandType::PRINT) {
         // вызов функции печати
     } else {
         std::cerr << "Неизвестная команда или недостаточно аргументов." << std::endl;
+<<<<<<< HEAD
         return 1;
     }
+=======
+        print_duration(start);
+        return 1;
+    }
+
+    print_duration(start);
+>>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
     return 0;
 }

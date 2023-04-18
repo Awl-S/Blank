@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 //
 // Created by orys on 18.04.23.
 //
 
+=======
+>>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
 #ifndef BLANK_ENCODINGCONVERTER_H
 #define BLANK_ENCODINGCONVERTER_H
 
@@ -31,8 +34,16 @@ private:
     void loadSettingsFromXml();
     void convertDirectory(const std::filesystem::path& dir);
     void convertFile(const std::filesystem::path& filepath);
+<<<<<<< HEAD
     std::string iconvConvert(const std::string& input, const std::string& fromCharset, const std::string& toCharset);
     void printStats();
+=======
+    bool iconvConvert(const std::string& input, std::string& output, const std::string& fromCharset, const std::string& toCharset);
+    void printStats();
+
+    bool is_utf8(const std::string& str);
+
+>>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
 };
 
 #endif //BLANK_ENCODINGCONVERTER_H
