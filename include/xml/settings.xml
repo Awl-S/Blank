@@ -1,0 +1,9 @@
+<settings>
+    <extensions>
+        <ext>.cfm</ext>
+        <ext>.tbl</ext>
+        <ext>.згт</ext>
+    </extensions>
+    <sourceEncoding>CP1251</sourceEncoding>
+    <targetEncoding>UTF-8</targetEncoding>
+</settings>
