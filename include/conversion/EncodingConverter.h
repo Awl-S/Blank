@@ -16,6 +16,7 @@
 #include <vector>
 #include "tinyxml2.h"
 
+
 class EncodingConverter {
 public:
     EncodingConverter(std::string  inputDir, const std::string& outputDir = "");
