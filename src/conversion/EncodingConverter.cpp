@@ -43,10 +43,6 @@ void EncodingConverter::convertDirectory(const std::filesystem::path& dir) {
     for (const auto& entry : std::filesystem::recursive_directory_iterator(dir)) {
         if (entry.is_regular_file()) {
             filesProcessed++;
-<<<<<<< HEAD
-            if (std::find(fileExtensions.begin(), fileExtensions.end(), entry.path().extension()) != fileExtensions.end()) {
-                convertFile(entry.path());
-=======
             std::filesystem::path relativePath = std::filesystem::relative(entry, inputDirectory);
             std::filesystem::path outputPath = useTempDirectory ? std::filesystem::temp_directory_path() / relativePath : outputDirectory / relativePath;
 
@@ -56,40 +52,10 @@ void EncodingConverter::convertDirectory(const std::filesystem::path& dir) {
                 // Если файл имеет другое расширение и outputDirectory указана, копируем его
                 std::filesystem::create_directories(outputPath.parent_path());
                 std::filesystem::copy_file(entry, outputPath, std::filesystem::copy_options::overwrite_existing);
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
             }
         }
     }
 }
-
-<<<<<<< HEAD
-void EncodingConverter::convertFile(const std::filesystem::path& filepath) {
-    std::ifstream inFile(filepath, std::ios::binary);
-    std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
-
-    std::string utf8Content = iconvConvert(content, sourceEncoding, targetEncoding);
-
-    std::filesystem::path outputPath = useTempDirectory ? std::filesystem::temp_directory_path() / filepath.filename() : outputDirectory / filepath.filename();
-
-    std::ofstream outFile(outputPath, std::ios::binary);
-    outFile.write(utf8Content.data(), utf8Content.size());
-    outFile.close();
-
-    if (useTempDirectory) {
-        std::filesystem::copy(outputPath, filepath, std::filesystem::copy_options::overwrite_existing);
-        std::filesystem::remove(outputPath);
-    }
-    filesConverted++;
-
-}
-
-std::string EncodingConverter::iconvConvert(const std::string& input, const std::string& fromCharset, const std::string& toCharset) {
-    iconv_t cd = iconv_open(toCharset.c_str(), fromCharset.c_str());
-    if (cd == (iconv_t) -1) {
-        perror("iconv_open");
-        exit(1);
-    }
-=======
 
 bool EncodingConverter::iconvConvert(const std::string& input, std::string& output, const std::string& fromCharset, const std::string& toCharset) {
     iconv_t cd = iconv_open(toCharset.c_str(), fromCharset.c_str());
@@ -98,7 +64,6 @@ bool EncodingConverter::iconvConvert(const std::string& input, std::string& outp
         return false;
     }
 
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
     std::vector<char> inBuf(input.begin(), input.end());
     size_t inLeft = inBuf.size();
     size_t outLeft = inLeft * 4;
@@ -110,23 +75,14 @@ bool EncodingConverter::iconvConvert(const std::string& input, std::string& outp
     while (inLeft > 0) {
         size_t result = iconv(cd, &inPtr, &inLeft, &outPtr, &outLeft);
         if (result == (size_t)-1) {
-<<<<<<< HEAD
-            perror("iconv");
-            iconv_close(cd);
-            exit(1);
-=======
             iconv_close(cd);
             return false;
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
         }
     }
 
     iconv_close(cd);
     outBuf.resize(outBuf.size() - outLeft);
 
-<<<<<<< HEAD
-    return std::string(outBuf.begin(), outBuf.end());
-=======
     output.assign(outBuf.begin(), outBuf.end());
     return true;
 }
@@ -157,15 +113,11 @@ void EncodingConverter::convertFile(const std::filesystem::path& filepath) {
         std::filesystem::copy(outputPath, filepath, std::filesystem::copy_options::overwrite_existing);
         std::filesystem::remove(outputPath);
     }
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
 }
 
 void EncodingConverter::printStats() {
     std::cout << "Files processed: " << filesProcessed << std::endl;
     std::cout << "Files converted: " << filesConverted << std::endl;
-<<<<<<< HEAD
-}
-=======
 }
 
 bool EncodingConverter::is_utf8(const std::string &str) {
@@ -185,4 +137,3 @@ bool EncodingConverter::is_utf8(const std::string &str) {
     }
     return true;
 }
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)

@@ -2,14 +2,9 @@ cmake_minimum_required(VERSION 3.25)
 project(Blank)
 
 set(CMAKE_CXX_STANDARD 23)
-<<<<<<< HEAD
-
-add_executable(Blank main.cpp src/command_line/CommandLine.cpp include/command_line/CommandLine.h src/conversion/file_converter.cpp include/conversion/file_converter.h src/conversion/EncodingConverter.cpp include/conversion/EncodingConverter.h)
-=======
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 add_executable(Blank main.cpp src/command_line/CommandLine.cpp include/command_line/CommandLine.h src/conversion/EncodingConverter.cpp include/conversion/EncodingConverter.h)
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
 
 #Подключение библиотек
 

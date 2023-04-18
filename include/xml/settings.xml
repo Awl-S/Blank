@@ -3,10 +3,7 @@
         <ext>.cfm</ext>
         <ext>.tbl</ext>
         <ext>.згт</ext>
-<<<<<<< HEAD
-=======
         <ext>.нбр</ext>
->>>>>>> 972d525 (feat(EncodingConverter): add support for .нбр files)
     </extensions>
     <sourceEncoding>CP1251</sourceEncoding>
     <targetEncoding>UTF-8</targetEncoding>
