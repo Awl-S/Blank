@@ -5,7 +5,7 @@
 
 class XmlFileReader : public FileReader {
 public:
-    XmlFileReader(const std::string& file_path) : FileReader(file_path) {}
+    explicit XmlFileReader(const std::string& file_path) : FileReader(file_path) {}
 
     // Реализация методов для чтения XML файлов
     // Пример: read_cfm(), read_zgt(), read_nbr(), read_point(), read_tbl()

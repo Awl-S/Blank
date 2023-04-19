@@ -1,7 +1,3 @@
-//
-// Created by orys on 18.04.23.
-//
-
 #ifndef BLANK_TBL_H
 #define BLANK_TBL_H
 

@@ -27,10 +27,9 @@ private:
     void loadSettingsFromXml();
     void convertDirectory(const std::filesystem::path& dir);
     void convertFile(const std::filesystem::path& filepath);
-    std::string iconvConvert(const std::string& input, const std::string& fromCharset, const std::string& toCharset);
-    void printStats();
-    bool iconvConvert(const std::string& input, std::string& output, const std::string& fromCharset, const std::string& toCharset);
-    bool is_utf8(const std::string& str);
+    static static bool iconvConvert(const std::string& input, std::string& output, const std::string& fromCharset, const std::string& toCharset);
+    void printStats() const;
+    static bool is_utf8(const std::string& str);
 };
 
 #endif //BLANK_ENCODINGCONVERTER_H

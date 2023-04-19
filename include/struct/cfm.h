@@ -1,14 +1,9 @@
-//
-// Created by orys on 18.04.23.
-//
-
 #ifndef BLANK_CFM_H
 #define BLANK_CFM_H
 
 #include <string>
 #include <vector>
 #include <array>
-
 struct cfm {
     std::string header;
     std::string blank;
@@ -22,5 +17,4 @@ struct cfm {
     int label_height;
     std::string tick_mask;
 };
-
 #endif //BLANK_CFM_H

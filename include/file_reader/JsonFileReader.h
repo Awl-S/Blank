@@ -5,7 +5,7 @@
 
 class JsonFileReader : public FileReader {
 public:
-    JsonFileReader(const std::string& file_path) : FileReader(file_path) {}
+    explicit JsonFileReader(const std::string& file_path) : FileReader(file_path) {}
 
     // Реализация методов для чтения JSON файлов
     // Пример: read_cfm(), read_zgt(), read_nbr(), read_point(), read_tbl()

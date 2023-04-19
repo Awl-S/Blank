@@ -1,7 +1,3 @@
-//
-// Created by orys on 18.04.23.
-//
-
 #ifndef BLANK_ZGT_H
 #define BLANK_ZGT_H
 

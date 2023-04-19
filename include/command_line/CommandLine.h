@@ -14,8 +14,8 @@ public:
         UNKNOWN
     };
 
-    CommandType get_command_type() const;
-    std::vector<std::string> get_args() const;
+    [[nodiscard]] CommandType get_command_type() const;
+    [[nodiscard]] std::vector<std::string> get_args() const;
 
 private:
     CommandType command_type;

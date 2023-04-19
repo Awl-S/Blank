@@ -19,13 +19,13 @@
 class FileReader {
 public:
     // Конструктор для инициализации файла
-    FileReader(const std::string& file_path) : file_path_(file_path) {}
+    explicit FileReader(std::string  file_path) : file_path_(std::move(file_path)) {}
 
     // Остальные методы FileReader ...
 
 protected:
     std::string file_path_;
-    std::string readLineString(std::ifstream &file)
+    static std::string readLineString(std::ifstream &file)
     {
         std::string line;
         if (std::getline(file, line))

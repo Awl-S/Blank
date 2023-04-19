@@ -34,7 +34,7 @@ void EncodingConverter::loadSettingsFromXml() {
     if (extElem) {
         tinyxml2::XMLElement* ext = extElem->FirstChildElement("ext");
         while (ext) {
-            fileExtensions.push_back(ext->GetText());
+            fileExtensions.emplace_back(ext->GetText());
             ext = ext->NextSiblingElement("ext");
         }
     }
@@ -127,7 +127,7 @@ void EncodingConverter::convertFile(const std::filesystem::path& filepath) {
     }
 }
 
-void EncodingConverter::printStats() {
+void EncodingConverter::printStats() const {
     std::cout << "Files processed: " << filesProcessed << std::endl;
     std::cout << "Files converted: " << filesConverted << std::endl;
 }

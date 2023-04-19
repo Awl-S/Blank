@@ -5,7 +5,7 @@
 
 class TxtFileReader : public FileReader {
 public:
-    TxtFileReader(const std::string& file_path) : FileReader(file_path) {}
+    explicit TxtFileReader(const std::string& file_path) : FileReader(file_path) {}
 
 
     void read_tbl(tbl& data) {
