@@ -15,6 +15,8 @@
 #include "../struct/cfm.h"
 #include "../struct/tbl.h"
 #include "../struct/zgt.h"
+#include "../struct/point_data.h"
+#include "../struct/nbr.h"
 
 class FileReader {
 public:

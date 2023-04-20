@@ -8,7 +8,7 @@ static std::shared_ptr<FileReader> create(const std::string& file_path) {
     std::string extension = p.extension().string();
     if (extension == ".json") {
         return std::make_shared<JsonFileReader>(file_path);
-    } else if (extension == ".xml") {
+    } else if (extension == ".help") {
         return std::make_shared<XmlFileReader>(file_path);
     } else if (extension == ".txt" || extension == ".cfm" || extension == ".zgt" || extension == ".nbr") {
         return std::make_shared<TxtFileReader>(file_path);

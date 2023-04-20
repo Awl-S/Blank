@@ -1,9 +1,11 @@
 #include <iostream>
 #include "include/command_line/CommandLine.h"
 #include "include/conversion/EncodingConverter.h"
-#include "include/xml/HelpText.h"
+#include "include/help/HelpText.h"
 #include "include/config_parser/Parser.h"
 #include "include/file_reader/TextFileReader.h"
+#include "include/struct/point_data.h"
+#include "include/pdf_rendering/PDFRendering.h"
 
 void print_duration(const auto& start) {
     auto stop = std::chrono::high_resolution_clock::now();
@@ -13,14 +15,19 @@ void print_duration(const auto& start) {
     std::cout << "Время выполнения: " << duration_milliseconds.count() << " milliseconds" << std::endl;
 }
 
-std::string find_file_by_name(const std::string& directory, const std::string& model_name) {
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
-        if (entry.is_regular_file() && entry.path().filename().string().find(model_name) != std::string::npos) {
-            return entry.path().string();
+    std::string find_file_by_name(const std::string& directory, const std::string& model_name, const std::string& extension) {
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+            if (entry.is_regular_file()) {
+                const auto& file_name = entry.path().filename().string();
+                const auto& file_extension = entry.path().extension().string();
+
+                if (file_name == model_name + file_extension && file_extension == extension) {
+                    return entry.path().string();
+                }
+            }
         }
+        throw std::runtime_error("File not found: " + model_name);
     }
-    throw std::runtime_error("File not found: " + model_name);
-}
 
 void test(){
     try {
@@ -47,27 +54,30 @@ void test(){
 //            std::cout << std::endl;
 //        }
         std::string cfm_file = config_parser->getFilePath("cfm");
-        std::string cfm_file_path = find_file_by_name(cfm_file, tbl_data[0].model);
+        std::string cfm_file_path = find_file_by_name(cfm_file, tbl_data[0].model, ".cfm");
         cfm cfm_data;
         TxtFileReader(cfm_file_path).read_cfm(cfm_data);
-
+        std::cout << cfm_file_path << std::endl;
         std::string zgt_file = config_parser->getFilePath("zgt");
-        std::string zgt_file_path = find_file_by_name(zgt_file, cfm_data.blank);
+        std::string zgt_file_path = find_file_by_name(zgt_file, cfm_data.blank, ".згт");
         std::cout << zgt_file_path << std::endl;
         zgt zgt_data;
         TxtFileReader(zgt_file_path).read_zgt(zgt_data);
-//
+
 //        std::string nbr_file = config_parser->getFilePath("nbr");
-//        nbr nbr_data;
+        nbr nbr_data;
 //        TxtFileReader(nbr_file).read_nbr(nbr_data);
-//
-//        std::string point_file = config_parser->getFilePath("point");
-//        point point_data;
-//        JsonFileReader(point_file).read_point(point_data);
+
+        std::string point_file = config_parser->getFilePath("point");
+        std::string point_file_path = find_file_by_name(point_file, tbl_data[0].model, ".point");
+        std::cout << point_file_path << std::endl;
+        point point_data;
+        TxtFileReader(point_file_path).read_point(point_data);
+
 
         // Здесь передаем данные в класс PDFRendering и выполняем обработку данных
-        // PDFRendering pdf_rendering(tbl_data, cfm_data, zgt_data, nbr_data, point_data);
-        // pdf_rendering.process();
+         PDFRendering pdf_rendering(cfm_data, zgt_data, tbl_data, nbr_data, point_data);
+         pdf_rendering.generatePDF("test.pdf");
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

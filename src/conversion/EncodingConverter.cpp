@@ -21,11 +21,11 @@ EncodingConverter::EncodingConverter(std::string  inputDir, const std::string& o
 
 void EncodingConverter::loadSettingsFromXml() {
     tinyxml2::XMLDocument doc;
-    doc.LoadFile("./settings/config.xml");
+    doc.LoadFile("./settings/config.help");
 
     tinyxml2::XMLElement* root = doc.FirstChildElement("settings");
     if (!root) {
-        std::cerr << "Invalid settings.xml format." << std::endl;
+        std::cerr << "Invalid settings.help format." << std::endl;
         exit(1);
     }
 

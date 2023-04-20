@@ -7,6 +7,31 @@ class TxtFileReader : public FileReader {
 public:
     explicit TxtFileReader(const std::string& file_path) : FileReader(file_path) {}
 
+    void read_nbr(nbr& data) {
+        std::ifstream file(file_path_);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file: " + file_path_);
+        }
+
+        std::string line;
+        size_t line_number = 1;
+        while (std::getline(file, line)) {
+            data.icon.insert(std::make_pair(line_number, line));
+            line_number++;
+        }
+    }
+
+    void read_point(point& data)  {
+        std::ifstream file(file_path_);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file: " + file_path_);
+        }
+
+        double x, y;
+        while (file >> x >> y) {
+            data.coordinates.emplace_back(x, y);
+        }
+    }
 
     void read_tbl(tbl& data) {
         std::ifstream file(file_path_);
@@ -90,11 +115,13 @@ public:
                 std::istringstream iss(line);
                 double temp;
                 while (iss >> temp) {
+                    data.mounting_holes.push_back(temp);
                 }
             } else if (count == 8) {
                 std::istringstream iss(line);
                 double temp;
                 while (iss >> temp) {
+                    data.marker_position.push_back(temp);
                 }
             } else if (count == 10) {
                 std::istringstream(line) >> data.font_serial_number[0] >> data.font_serial_number[1];
