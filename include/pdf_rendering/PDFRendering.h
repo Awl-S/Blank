@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include <iomanip>
 #include "../struct/cfm.h"
 #include "../struct/zgt.h"
 #include "../struct/tbl.h"
@@ -149,6 +151,7 @@ public:
         size_t i = 0;
         for (double angle : marks) {
             angle = 4.71239 - angle;
+//            angle = 5.4 - angle;
 
             double sinAngle = sin(angle);
             double cosAngle = cos(angle);
@@ -161,8 +164,11 @@ public:
                double shift_angle = angle + 1.5708; // Смещение на 90 градусов вправо
                double center_offset = cfm_data_.digital_tick[2] / 2; // Размер центра
 
-               x1 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
-               y1 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+//               x1 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+//               y1 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+
+               x1 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[0]) * cosAngle;
+               y1 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[0]) * sinAngle;
 
                x1 -= center_offset * cos(shift_angle); // Смещение x координаты
                y1 -= center_offset * sin(shift_angle); // Смещение y координаты
@@ -180,32 +186,127 @@ public:
             HPDF_Page_LineTo(page, x1, y1);
             HPDF_Page_Stroke(page);
 
+            HPDF_Page_SetFontAndSize(page, HPDF_GetFont(pdf_, "Helvetica", NULL), cfm_data_.format[0]);
+
+//            float text_x, text_y;
+//            if(i == 0) {
+//                // Смещение текста (по x и y) для начальной точки
+//                text_x = x1 + 2.5f;
+//                text_y = y1 - 2.5f;
+//            } else {
+//                // Смещение текста (по x и y) для остальных точек
+//                text_x = x1;
+//                text_y = y1 - 2.5f;
+//            }
+//
+//// Определение строкового представления числа
+//            std::stringstream ss;
+//            ss << std::fixed << std::setprecision(2) << cfm_data_.marks[i];
+//
+//// Рисование текста на верхней линии
+//            HPDF_Page_BeginText(page);
+//            HPDF_Page_TextOut(page, text_x, text_y, ss.str().c_str());
+//            HPDF_Page_EndText(page);
+
             // Нижняя линия
             x1 = point_data_.coordinates[0].first + radius * cos(angle);
             y1 = point_data_.coordinates[0].second + radius * sin(angle);
             x2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
             y2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
 
+            if(i == 0) {
+                x2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[0]) * cosAngle;
+                y2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[0]) * sinAngle;
+            }
+
             HPDF_Page_SetLineWidth(page, cfm_data_.digital_tick[1]);
             HPDF_Page_MoveTo(page, x2, y2);
             HPDF_Page_LineTo(page, x1, y1);
             HPDF_Page_Stroke(page);
+
+            for(int e = 0; e < cfm_data_.tick_mask.size()-1; e++) {
+                float z1, f1, z2, f2;
+                z1 = point_data_.coordinates[0].first + radius * cos(angle);
+                f1 = point_data_.coordinates[0].second + radius * sin(angle);
+                z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+                if (cfm_data_.tick_mask[e] == '1') {
+                    z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                    f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+                }
+                if(cfm_data_.tick_mask[e] == '2'){
+                    z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                    f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+                }
+                if(cfm_data_.tick_mask[e] == '3'){
+                    z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                    f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+                }
+
+                HPDF_Page_SetLineWidth(page, cfm_data_.digital_tick[1]);
+                HPDF_Page_MoveTo(page, z2, f2);
+                HPDF_Page_LineTo(page, z1, f1);
+                HPDF_Page_Stroke(page);
+            }
+
             i++;
         }
 
+        double max_mark = *std::max_element(cfm_data_.marks.begin(), cfm_data_.marks.end());
+        std::stringstream max_mark_ss;
+        max_mark_ss << std::fixed << std::setprecision(cfm_data_.format[1]) << max_mark;
+        std::string max_mark_str = max_mark_ss.str();
+        size_t max_mark_length = max_mark_str.length();
+
+        HPDF_Page_SetFontAndSize(page, HPDF_GetFont(pdf_, "Helvetica", NULL), cfm_data_.digit_height);
+        auto radius1 = radius /2 + cfm_data_.digital_tick[0];
+        auto xDelta = cfm_data_.digital_tick[2]/4.f;
+        auto yDelta = cfm_data_.digital_tick[2]/4.f;
+        double total_length_mm = max_mark_length * cfm_data_.digit_height * 0.5; // Здесь используется значение 0.5 для пропорции ширины символа к его высоте
+
+        for (size_t i = 0; i < marks.size(); ++i) {
+            double angle = 4.71239 - marks[i];
+            std::cout << marks[i]*180/3.14159265358979323846 << std::endl;
+            if(marks[i]*180/3.14159265358979323846 > 180){
+                xDelta +=total_length_mm/4.f;
+//                yDelta -=0.5;
+            }
+            double x = point_data_.coordinates[0].first + radius1 * cos(angle);
+            double y = point_data_.coordinates[0].second + radius1 * sin(angle);
+
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(cfm_data_.format[1]) << cfm_data_.marks[i];
+
+            HPDF_Page_BeginText(page);
+            HPDF_Page_TextOut(page, x-xDelta, y-yDelta, ss.str().c_str());
+            HPDF_Page_EndText(page);
+        }
 
         std::cout << cfm_data_.tick_mask << std::endl;
 
-        for(int i = 0; i < cfm_data_.tick_mask.size()-1; i++) {
-//            if (cfm_data_.tick_mask[i] == '1') {
-//                std::cout << "1" << std::endl;
-//            }
-//            if(cfm_data_.tick_mask[i] == '2'){
-//                std::cout << "2" << std::endl;
-//            }
-//            if(cfm_data_.tick_mask[i] == '3'){
-//                std::cout << "3" << std::endl;
-//            }
+        for(int e = 0; e < cfm_data_.tick_mask.size()-1; e++) {
+            float z1, f1, z2, f2;
+            z1 = point_data_.coordinates[0].first + radius * cos(angle);
+            f1 = point_data_.coordinates[0].second + radius * sin(angle);
+            z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+            f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+            if (cfm_data_.tick_mask[e] == '1') {
+                z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+            }
+            if(cfm_data_.tick_mask[e] == '2'){
+                z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+            }
+            if(cfm_data_.tick_mask[e] == '3'){
+                z2 = point_data_.coordinates[0].first + (radius - cfm_data_.digital_tick[2]) * cosAngle;
+                f2 = point_data_.coordinates[0].second + (radius - cfm_data_.digital_tick[2]) * sinAngle;
+            }
+
+            HPDF_Page_SetLineWidth(page, cfm_data_.digital_tick[1]);
+            HPDF_Page_MoveTo(page, z2, f2);
+            HPDF_Page_LineTo(page, z1, f1);
+            HPDF_Page_Stroke(page);
         }
 
         HPDF_SaveToFile(pdf_, filename.c_str());

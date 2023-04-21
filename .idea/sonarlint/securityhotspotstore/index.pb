@@ -3,8 +3,6 @@ X
 (include/config_parser/JSONConfigParser.h,f/b/fb997a93ac55fa85d43c71f43994d9ee23d6e5d4
 W
 'include/config_parser/XMLConfigParser.h,f/1/f12373034341700058713b2b5370c69645ba85e3
-T
-$include/file_reader/JsonFileReader.h,6/9/691f1f13529205dc7bc153c79c42a2f381a2f298
 R
 "include/command_line/CommandLine.h,1/2/1255d99204cfb9980d2f9178e912173d5cc52308
 T

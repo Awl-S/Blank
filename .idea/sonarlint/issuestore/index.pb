@@ -11,8 +11,6 @@ R
 "include/command_line/CommandLine.h,1/2/1255d99204cfb9980d2f9178e912173d5cc52308
 S
 #include/file_reader/XmlFileReader.h,9/4/94427732e62e8793e39de4dd82891a5cb26bdadf
-T
-$include/file_reader/JsonFileReader.h,6/9/691f1f13529205dc7bc153c79c42a2f381a2f298
 P
  src/command_line/CommandLine.cpp,d/6/d61ab657d574dee7d5ab3c917a14962e67f19781
 U

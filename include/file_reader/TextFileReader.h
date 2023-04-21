@@ -132,7 +132,7 @@ public:
         }
     }
 
-// Реализация функции trim (если еще не добавлена)
+// Реализация функции trim
     std::string trim(const std::string& s) {
         auto start = s.begin();
         while (start != s.end() && std::isspace(*start)) {
