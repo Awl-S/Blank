@@ -42,27 +42,19 @@ void test(){
             TxtFileReader(tbl_file).read_tbl(temp_tbl);
             tbl_data.push_back(temp_tbl);
         }
-//        for(auto  i : tbl_data){
-//            std::cout << i.position << std::endl;
-//            std::cout << i.model << std::endl;
-//            for(auto &j : i.measurements){
-//                for( auto k : j){
-//                    std::cout << k << " ";
-//                }
-//                std::cout << std::endl;
-//            }
-//            std::cout << std::endl;
-//        }
+
         std::string cfm_file = config_parser->getFilePath("cfm");
         std::string cfm_file_path = find_file_by_name(cfm_file, tbl_data[0].model, ".cfm");
         cfm cfm_data;
         TxtFileReader(cfm_file_path).read_cfm(cfm_data);
         std::cout << cfm_file_path << std::endl;
+
         std::string zgt_file = config_parser->getFilePath("zgt");
         std::string zgt_file_path = find_file_by_name(zgt_file, cfm_data.blank, ".згт");
-        std::cout << zgt_file_path << std::endl;
         zgt zgt_data;
         TxtFileReader(zgt_file_path).read_zgt(zgt_data);
+        std::cout << zgt_file_path << std::endl;
+
 
 //        std::string nbr_file = config_parser->getFilePath("nbr");
         nbr nbr_data;
@@ -70,10 +62,9 @@ void test(){
 
         std::string point_file = config_parser->getFilePath("point");
         std::string point_file_path = find_file_by_name(point_file, tbl_data[0].model, ".point");
-        std::cout << point_file_path << std::endl;
         point point_data;
         TxtFileReader(point_file_path).read_point(point_data);
-
+        std::cout << point_file_path << std::endl;
 
         // Здесь передаем данные в класс PDFRendering и выполняем обработку данных
          PDFRendering pdf_rendering(cfm_data, zgt_data, tbl_data, nbr_data, point_data);

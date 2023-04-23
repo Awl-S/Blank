@@ -9,8 +9,6 @@ T
 $include/config_parser/ConfigParser.h,5/8/5873396be5c391d435e75935c0da11613ab48efe
 W
 'include/config_parser/TXTConfigParser.h,7/b/7b3d564588933ce98fb2b888b86edc8e6c6ce772
-S
-#include/file_reader/XmlFileReader.h,9/4/94427732e62e8793e39de4dd82891a5cb26bdadf
 P
  src/command_line/CommandLine.cpp,d/6/d61ab657d574dee7d5ab3c917a14962e67f19781
 V
