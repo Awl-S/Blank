@@ -23,8 +23,6 @@ public:
     // Конструктор для инициализации файла
     explicit FileReader(std::string  file_path) : file_path_(std::move(file_path)) {}
 
-    // Остальные методы FileReader ...
-
 protected:
     std::string file_path_;
     static std::string readLineString(std::ifstream &file)
@@ -37,6 +35,17 @@ protected:
             line.erase(line.find_last_not_of(" \t\r\n") + 1);
         }
         return line;
+    }
+    std::string trim(const std::string& s) {
+        auto start = s.begin();
+        while (start != s.end() && std::isspace(*start)) {
+            start++;
+        }
+        auto end = s.end();
+        while (end != start && std::isspace(*(end - 1))) {
+            end--;
+        }
+        return std::string(start, end);
     }
 };
 

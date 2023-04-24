@@ -18,5 +18,4 @@ private:
     std::map<std::string, std::string> config_data;
 };
 
-
 #endif //BLANK_TXTCONFIGPARSER_H

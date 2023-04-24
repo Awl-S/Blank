@@ -1,10 +1,10 @@
 #ifndef BLANK_PARSER_H
 #define BLANK_PARSER_H
 
-#include "ConfigParser.h"
-#include "JSONConfigParser.h"
-#include "XMLConfigParser.h"
-#include "TXTConfigParser.h"
+#include "../../include/config_parser/ConfigParser.h"
+#include "../../include/config_parser/JSONConfigParser.h"
+#include "../../include/config_parser/XMLConfigParser.h"
+#include "../../include/config_parser/TXTConfigParser.h"
 
 std::unique_ptr<ConfigParser> ConfigParser::create(const std::string& config_file_path) {
     if (config_file_path.ends_with(".json")) {
@@ -17,5 +17,4 @@ std::unique_ptr<ConfigParser> ConfigParser::create(const std::string& config_fil
         throw std::runtime_error("Unsupported file type: " + config_file_path);
     }
 }
-
 #endif //BLANK_PARSER_H

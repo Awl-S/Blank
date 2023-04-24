@@ -9,7 +9,6 @@ std::vector<std::string> JSONConfigParser::getFileList(const std::string &key, c
             files.push_back(entry.path().string());
         }
     }
-
     return files;
 }
 

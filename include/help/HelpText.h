@@ -9,22 +9,22 @@ using namespace tinyxml2;
 
 std::string read_help_text() {
     XMLDocument doc;
-    XMLError error = doc.LoadFile("./settings/help.help");
+    XMLError error = doc.LoadFile("./settings/help.xml");
 
     if (error != XML_SUCCESS) {
-        std::cerr << "Не удалось прочитать help.help: " << doc.ErrorName() << std::endl;
+        std::cerr << "Не удалось прочитать help.xml: " << doc.ErrorName() << std::endl;
         return "";
     }
 
     XMLNode* help_node = doc.FirstChildElement("help");
     if (!help_node) {
-        std::cerr << "Неверная структура help.help." << std::endl;
+        std::cerr << "Неверная структура help.xml" << std::endl;
         return "";
     }
 
     XMLElement* text_elem = help_node->FirstChildElement("text");
     if (!text_elem) {
-        std::cerr << "Не найден текст в help.help." << std::endl;
+        std::cerr << "Не найден текст в help.xml" << std::endl;
         return "";
     }
 

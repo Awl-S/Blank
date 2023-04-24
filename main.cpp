@@ -2,7 +2,7 @@
 #include "include/command_line/CommandLine.h"
 #include "include/conversion/EncodingConverter.h"
 #include "include/help/HelpText.h"
-#include "include/config_parser/Parser.h"
+#include "src/config_parser/Parser.h"
 #include "include/file_reader/TextFileReader.h"
 #include "include/struct/point_data.h"
 #include "include/pdf_rendering/PDFRendering.h"
@@ -15,19 +15,19 @@ void print_duration(const auto& start) {
     std::cout << "Время выполнения: " << duration_milliseconds.count() << " milliseconds" << std::endl;
 }
 
-    std::string find_file_by_name(const std::string& directory, const std::string& model_name, const std::string& extension) {
-        for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
-            if (entry.is_regular_file()) {
-                const auto& file_name = entry.path().filename().string();
-                const auto& file_extension = entry.path().extension().string();
+std::string find_file_by_name(const std::string& directory, const std::string& model_name, const std::string& extension) {
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+        if (entry.is_regular_file()) {
+            const auto& file_name = entry.path().filename().string();
+            const auto& file_extension = entry.path().extension().string();
 
-                if (file_name == model_name + file_extension && file_extension == extension) {
-                    return entry.path().string();
-                }
+            if (file_name == model_name + file_extension && file_extension == extension) {
+                return entry.path().string();
             }
         }
-        throw std::runtime_error("File not found: " + model_name);
     }
+    throw std::runtime_error("File not found: " + model_name);
+}
 
 void test(){
     try {
@@ -67,8 +67,8 @@ void test(){
         std::cout << point_file_path << std::endl;
 
         // Здесь передаем данные в класс PDFRendering и выполняем обработку данных
-         PDFRendering pdf_rendering(cfm_data, zgt_data, tbl_data, nbr_data, point_data);
-         pdf_rendering.generatePDF("test.pdf");
+        PDFRendering pdf_rendering(cfm_data, zgt_data, tbl_data, nbr_data, point_data);
+        pdf_rendering.generatePDF("test.pdf");
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
@@ -99,14 +99,19 @@ int main(int argc, char *argv[]) {
         ConfigParser::create(args[0]); // Читает файлы конфигурации
     } else if (command_type == CommandLine::CommandType::PRINT) {
         // вызов функции печати
+        try{
+
+        } catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
     } else {
         test();
-//        std::string help_text = read_help_text();
-//        if (!help_text.empty()) {
-//            std::cout << help_text << std::endl;
-//        }
-//        std::cerr << "Неизвестная команда или недостаточно аргументов." << std::endl;
-//        return 1;
+        std::string help_text = read_help_text();
+        if (!help_text.empty()) {
+            std::cout << help_text << std::endl;
+        }
+        std::cerr << "Неизвестная команда или недостаточно аргументов." << std::endl;
+        return 1;
     }
     print_duration(start);
     return 0;

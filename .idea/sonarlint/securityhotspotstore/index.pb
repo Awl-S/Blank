@@ -1,22 +1,4 @@
 
-X
-(include/config_parser/JSONConfigParser.h,f/b/fb997a93ac55fa85d43c71f43994d9ee23d6e5d4
-W
-'include/config_parser/XMLConfigParser.h,f/1/f12373034341700058713b2b5370c69645ba85e3
-R
-"include/command_line/CommandLine.h,1/2/1255d99204cfb9980d2f9178e912173d5cc52308
-T
-$include/config_parser/ConfigParser.h,5/8/5873396be5c391d435e75935c0da11613ab48efe
-W
-'include/config_parser/TXTConfigParser.h,7/b/7b3d564588933ce98fb2b888b86edc8e6c6ce772
-P
- src/command_line/CommandLine.cpp,d/6/d61ab657d574dee7d5ab3c917a14962e67f19781
-V
-&src/config_parser/JSONConfigParser.cpp,a/7/a7e9d60c20e7b6099701d0e10cf0bf0c2afea125
-U
-%src/config_parser/TXTConfigParser.cpp,1/4/147af37681b922173dbebf41a6bedbe2f87135f5
-U
-%src/config_parser/XMLConfigParser.cpp,f/2/f24b62bd3a7a9f0735e633a25c7b9345a78140a4
 R
 "src/file_reader/JsonFileReader.cpp,2/e/2e821bab2fd91a1d03c2f42032120232a5191b43
 R

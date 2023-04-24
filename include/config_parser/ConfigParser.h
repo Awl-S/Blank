@@ -17,5 +17,4 @@ public:
     static std::unique_ptr<ConfigParser> create(const std::string& config_file_path);
 };
 
-
 #endif //BLANK_CONFIGPARSER_H
