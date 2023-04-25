@@ -55,8 +55,8 @@ void test(){
         TxtFileReader(zgt_file_path).read_zgt(zgt_data);
         std::cout << zgt_file_path << std::endl;
 
-
 //        std::string nbr_file = config_parser->getFilePath("nbr");
+//        std::string nbr_file_path = find_file_by_name(nbr_file, "", ".нбр");
         nbr nbr_data;
 //        TxtFileReader(nbr_file).read_nbr(nbr_data);
 

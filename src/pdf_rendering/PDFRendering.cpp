@@ -100,6 +100,7 @@ void PDFRendering::drawMainLines(HPDF_Page page, size_t blank) {
 
         draw_line(page, x2, y2, x1, y1);
 
+
         // Нижняя линия
         x1 = point_data_.coordinates[point_tbl[blank] - 1].first + radius * cos(angle);
         y1 = point_data_.coordinates[point_tbl[blank] - 1].second + radius * sin(angle);
@@ -166,10 +167,10 @@ void PDFRendering::generatePDF(const std::string &filename) {
         totalPage = 2;
     }
 
-    for(auto page_list = 0; page_list < totalPage; page_list++) {
-            createA3Page();
-            page = HPDF_GetCurrentPage(pdf_);
-            if(page_list == 1) {
+    for(auto page_list = 0; page_list < totalPage; ++page_list) {
+        createA3Page();
+        page = HPDF_GetCurrentPage(pdf_);
+        if(page_list == 1) {
             size_point_tbl = point_tbl.size();
         }
         for (; blank < size_point_tbl; blank++) {
@@ -195,21 +196,26 @@ void PDFRendering::generatePDF(const std::string &filename) {
             }
 
             // Индексы не изменяются
-            if (true) {
-                double xy = zgt_data_.mounting_holes[0];
-                double yz = zgt_data_.mounting_holes[1];
-                yz = yz > 0 ? yz : -yz;
-                drawCircle(page, point_data_.coordinates[point_tbl[blank] - 1].first + xy,
-                           point_data_.coordinates[point_tbl[blank] - 1].second + yz,
-                           zgt_data_.mounting_holes[2] / 2.0f);
+            if(true){
+                double xy, yz, radius;
+                for (int i = 0; i < 2; ++i) {
+                    xy = zgt_data_.mounting_holes[i * 3];
+                    yz = zgt_data_.mounting_holes[i * 3 + 1];
+                    yz = (yz > 0) ? -yz : abs(yz);
+                    radius = zgt_data_.mounting_holes[i * 3 + 2] / 2.0f;
 
-                xy = zgt_data_.mounting_holes[3];
-                yz = zgt_data_.mounting_holes[4];
-                yz = yz > 0 ? yz : -yz;
-                drawCircle(page, point_data_.coordinates[point_tbl[blank] - 1].first + xy,
-                           point_data_.coordinates[point_tbl[blank] - 1].second + yz,
-                           zgt_data_.mounting_holes[5] / 2.0f);
+                    drawCircle(page, point_data_.coordinates[point_tbl[blank] - 1].first + xy,
+                               point_data_.coordinates[point_tbl[blank] - 1].second + yz,
+                               radius);
+                }
             }
+
+            generate_Marks(blank);
+            drawMainLines(page, blank);
+
+            drawDigitIndices(page, blank);
+            drawAdditionalTicks(page, blank);
+            marks.clear();
 
             generate_Marks(blank);
             drawMainLines(page, blank);
