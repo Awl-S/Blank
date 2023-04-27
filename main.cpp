@@ -106,13 +106,14 @@ int main(int argc, char *argv[]) {
         }
     } else {
         test();
-        std::string help_text = read_help_text();
-        if (!help_text.empty()) {
-            std::cout << help_text << std::endl;
-        }
-        std::cerr << "Неизвестная команда или недостаточно аргументов." << std::endl;
-        return 1;
+//        std::string help_text = read_help_text();
+//        if (!help_text.empty()) {
+//            std::cout << help_text << std::endl;
+//        }
+//        std::cerr << "Неизвестная команда или недостаточно аргументов." << std::endl;
+//        return 1;
     }
     print_duration(start);
+
     return 0;
 }
